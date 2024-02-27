@@ -9,22 +9,25 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserServiceV1 {
 
-    public UserService(UserJdbcRepository userJdbcRepository) {
+    public UserServiceV1(UserJdbcRepository userJdbcRepository) {
         this.userJdbcRepository = userJdbcRepository;
     }
 
     private final UserJdbcRepository userJdbcRepository;
 
+    // 회원 등록
     public void saveUser(UserCreateRequest request) {
         userJdbcRepository.saveUser(request.getName(), request.getAge());
     }
 
+    // 전체 회원 목록 조회
     public List<UserResponse> getUsers() {
         return userJdbcRepository.getUsers();
     }
 
+    // 회원 정보 수정
     public void updateUser(UserUpdateRequest request) {
 
         // UserRepository 연결
@@ -37,6 +40,7 @@ public class UserService {
         userJdbcRepository.updateUserName(request.getName(), request.getId());
     }
 
+    // 회원 정보 삭제
     public void deleteUser(String name) {
         if (userJdbcRepository.isUserNotExist(name)) {
             throw new IllegalArgumentException();
