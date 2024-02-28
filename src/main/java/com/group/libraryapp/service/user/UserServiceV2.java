@@ -6,6 +6,7 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest;
 import com.group.libraryapp.dto.user.request.UserUpdateRequest;
 import com.group.libraryapp.dto.user.response.UserResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,11 +21,14 @@ public class UserServiceV2 {
     }
 
     // 회원 등록
+    @Transactional
     public void saveUser(UserCreateRequest request) {
         User user = userRepository.save(new User(request.getName(), request.getAge()));
+        throw new IllegalArgumentException();
     }
 
     // 전체 회원 목록 조회
+    @Transactional(readOnly = true)
     public List<UserResponse> getUsers() {
         return userRepository.findAll().stream()
                 .map(UserResponse::new)
@@ -32,6 +36,7 @@ public class UserServiceV2 {
     }
 
     // 회원 정보 수정
+    @Transactional
     public void updateUser(UserUpdateRequest request) {
         // select * from user where id = ?;
         // Optional<User>
@@ -42,10 +47,11 @@ public class UserServiceV2 {
 
         // 2. user가 있다면, 객체 변경 후 저장
         user.updateName(request.getName());
-        userRepository.save(user);
+        // userRepository.save(user);
     }
 
     // 회원 정보 삭제
+    @Transactional
     public void deleteUser(String name) {
 
         // 1. 이름을 기준으로 1개의 데이터를 가져 와서 user가 없는 경우 예외 발생
