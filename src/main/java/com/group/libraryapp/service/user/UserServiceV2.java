@@ -24,7 +24,6 @@ public class UserServiceV2 {
     @Transactional
     public void saveUser(UserCreateRequest request) {
         User user = userRepository.save(new User(request.getName(), request.getAge()));
-        throw new IllegalArgumentException();
     }
 
     // 전체 회원 목록 조회
