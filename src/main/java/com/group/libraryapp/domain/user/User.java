@@ -19,7 +19,7 @@ public class User {
     private Integer age;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserLoanHistory> userLoanHistorys = new ArrayList<>();
+    private List<UserLoanHistory> userLoanHistories = new ArrayList<>();
 
     protected User() {
     }
@@ -46,5 +46,9 @@ public class User {
 
     public void updateName(String name) {
         this.name = name;
+    }
+
+    public void loanBook(String bookName) {
+        this.userLoanHistories.add(new UserLoanHistory(this, bookName));
     }
 }
