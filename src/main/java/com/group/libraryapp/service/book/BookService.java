@@ -56,15 +56,9 @@ public class BookService {
 
     @Transactional
     public void returnBook(BookReturnRequest request) {
-        // 1. 유저 정보를 가져옴
         User user = userRepository.findByName(request.getUserName())
                 .orElseThrow(IllegalArgumentException::new);
 
-        // 2. 유저 아이디와 책 정보를 기반으로 대출 기록 조회
-        UserLoanHistory history = userLoanHistoryRepository.findByUserIdAndBookName(user.getId(), request.getBookName())
-                .orElseThrow(IllegalArgumentException::new);
-
-        // 3. 대출 기록 반납 처리
-        history.doReturn();
+        user.returnBook(request.getBookName());
     }
 }
