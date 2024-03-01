@@ -49,7 +49,7 @@ public class BookService {
                 .orElseThrow(IllegalArgumentException::new);
 
         // 5. 유저 정보와 책 정보를 기반으로 대출 기록 생성
-        userLoanHistoryRepository.save(new UserLoanHistory(user.getId(), book.getName(), false));
+        userLoanHistoryRepository.save(new UserLoanHistory(user, book.getName(), false));
 
     }
 
