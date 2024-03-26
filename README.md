@@ -165,13 +165,25 @@ spring.com:3000
 ### ✔️ API 개발하고 테스트하기
 
 <p>API를 개발하기 전에는 API 스펙을 살펴봐야 한다. </p>
-<p>HTTP Method와 path를 결정하고 쿼리를 사용할 것인지 아니면 바디를 사용할 것인지,</p> 
-<p>쿼리를 사용한다면 어떤 key를 이용할 것인지, 어떤 형태로 줄 것인지를 고맨해서 결정해야 한다.</p>
+<p>HTTP Method와 path를 결정하고, 데이터를 전달하기 위해 쿼리를 사용할 것인지 아니면 바디를 사용할 것인지, 결과는 어떤 형태로 줄 것인지를 고민해서 결정해야 한다.</p>
 
 #### 1️⃣ GET API
+  #### ➕ 덧셈 API
+  * HTTP Method : `GET`
+  * HTTP Path : `/add`
+  * 쿼리 사용
+    * `int number1`
+    * `int number2`
+  * 결과 반환
+    * `int 쿼리로 들어온 두 숫자의 합`   
+
+  #### 📍 Controller 
+  * `@RestController` : 주어진 class를 Controller로 등록 (Controller : API의 진입 지점)
+  * `@GetMapping(“/add”)` : 아래 함수를 HTTP Method가 `GET` 이고, HTTP path가 `/add`인 API로 지정
+  * `@RequestParam` : 주어진 쿼리를 함수 파라미터로 넣음
+    * 단일 타입으로 넣을 수도 있지만, request DTO를 생성하여 객체 넣기도 가능 (➡️ 이때 어노테이션 생략) 
 
 #### 2️⃣ POST API
-
  
 </details>
 
