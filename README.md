@@ -184,6 +184,31 @@ spring.com:3000
     * 단일 타입으로 넣을 수도 있지만, request DTO를 생성하여 객체 넣기도 가능 (➡️ 이때 어노테이션 생략) 
 
 #### 2️⃣ POST API
+<p>HTTP Body 사용법 연습을 위해 곱셈 기능을 POST로 작성해보자. (원래 POST API는 어떤 값을 저장한다는 의미이기 때문에 적절한 방법은 아니다 😅)</p>
+  
+  #### ➕ 곱셈 API
+  * HTTP Method : `POST`
+  * HTTP Path : `/multiply`
+  * HTTP Body (JSON)
+    
+    ```text
+    {
+      “number1”: 숫자,
+      “number2”: 숫자
+    }
+    ```
+
+    * JSON (**J**ava**S**cript **O**bject **N**otation)
+      * 중괄호를 사용하여 `"key": "value"`로 표기하는 객체 표기법
+      * 쉼표로 속성 구분
+      * Java의 Map<Object, Object>와 유사
+  * 결과 반환
+    * `Body로 들어온 두 숫자의 곱`   
+
+  #### 📍 Controller 
+  * `@PostMapping(“/multiply”)` : 아래 함수를 HTTP Method가 `POST` 이고, HTTP path가 `/multiply`인 API로 지정
+  * `@RequestBody` : HTTP Body로 들어오는 JSON을 파라미터로 넘긴 객체(DTO)로 변경
+    * DTO에는 JSON의 key값이 명시되어야 하며, 각 속성은 key값과 동일하게, 타입도 value의 타입에 따라 작성 
  
 </details>
 
