@@ -209,6 +209,75 @@ spring.com:3000
   * `@PostMapping(“/multiply”)` : 아래 함수를 HTTP Method가 `POST` 이고, HTTP path가 `/multiply`인 API로 지정
   * `@RequestBody` : HTTP Body로 들어오는 JSON을 파라미터로 넘긴 객체(DTO)로 변경
     * DTO에는 JSON의 key값이 명시되어야 하며, 각 속성은 key값과 동일하게, 타입도 value의 타입에 따라 작성 
+
+### ✔️ 도서 관리 어플리케이션 API 개발
+#### 주요 기능
+* 👤 `사용자`
+  * 도서관 사용자를 등록할 수 있습니다.
+  * 등록된 사용자 목록을 조회할 수 있습니다.
+  * 사용자의 이름을 변경할 수 있습니다.
+  * 등록된 사용자를 삭제할 수 있습니다.
+ 
+* 📖 `도서`
+  * 도서관에 책을 등록 및 삭제할 수 있습니다.
+  * 사용자는 등록된 도서를 대출/반납할 수 있습니다.
+    * 다른 사용자가 대여 중인 책은 빌릴 수 없습니다.  
+
+#### 1️⃣ 도서관 사용자 등록 
+  #### 👤 유저 생성 API
+  * HTTP Method : `POST`
+  * HTTP Path : `/user`
+  * HTTP Body (JSON)
+  
+    ```text
+      {
+        “name”: String (null X),
+        “age”: Integer
+      }
+    ```
+    * String : null 허용 ➡️ 검증 로직 필요
+    * Integer : null 허용 (int : null 허용 X)
+    
+  * 결과 반환 X
+    * `200 OK` 상태 코드
+
+   
+  #### 로직
+   ##### 1️⃣ API가 호출
+   ##### 2️⃣ User 클래스의 인스턴스 생성
+   ##### 3️⃣ 생성한 데이터 List에 저장
+
+   ```java
+      @RestController
+      public class UserController {
+        private final List<User> users = new ArrayList<>();
+
+        @PostMapping("/user")
+        public void saveUser(@RequestBody UserCreateRequest request) {
+          User newUser = new User(request.getName(), request.getAge());
+          users.add(newUser);
+        }
+      }
+   ```
+
+#### 2️⃣ 사용자 목록 조회
+  #### 👤 유저 조회 API
+  * HTTP Method : `GET`
+  * HTTP Path : `/user`
+  * 쿼리 : X (➡️ API 호출시, 전체 User 데이터를 줄 것이므로)
+  * 결과 반환
+
+    ```text
+      [{
+        “id”: Long,
+        “name”: String (null X),
+        “age”: Integer
+      }, ...]
+    ```
+  ##### 🤔 어떻게 결과를 JSON으로 반환할 수 있을까?
+
+  
+  ##### 🤔 Id는 무엇일까?
  
 </details>
 
@@ -237,16 +306,7 @@ spring.com:3000
 <details>
   
 **<summary> `Section 5) 책 요구사항 구현하기` </summary>**
-### 주요 기능
-* 👤 `사용자`
-  *  도서관 사용자를 등록할 수 있습니다.
-  *  등록된 사용자 목록을 조회할 수 있습니다.
-  *  사용자의 이름을 변경할 수 있습니다.
-  *  등록된 사용자를 삭제할 수 있습니다.
- 
-* 📖 `도서`
-  *  도서관에 책을 등록할 수 있습니다.
-  *  사용자는 등록된 도서를 대출/반납할 수 있습니다.
+
 </details>
 
 
