@@ -243,7 +243,7 @@ spring.com:3000
 
    
   #### 로직
-   ##### 1️⃣ API가 호출
+   ##### 1️⃣ API 호출
    ##### 2️⃣ User 클래스의 인스턴스 생성
    ##### 3️⃣ 생성한 데이터 List에 저장
 
@@ -275,9 +275,28 @@ spring.com:3000
       }, ...]
     ```
   ##### 🤔 어떻게 결과를 JSON으로 반환할 수 있을까?
-
+  <p>파라미터로 넘기는 객체(DTO)에 getter가 있다면, Controller에서 객체를 반환시 JSON으로 응답이 가능하다. </p>
+  
+  ➡️ `@RestController`를 클래스에 붙여준 덕분에 가능한 일 !
   
   ##### 🤔 Id는 무엇일까?
+  <p>Id란 데이터 별로 겹치지 않는 유일한 번호를 의미한다. API 스펙에 Id가 있다는 것은 User 별로 고유한 번호를 API 응답 결과로 반환하기 위함이다.</p>
+  <p>여기서는 List에 담겨 있는 User의 순서를 Id로 설정하자.</p>
+
+  #### 로직
+   ##### 1️⃣ API 호출
+   ##### 2️⃣ List로 저장된 유저 정보 반환
+
+   ```java
+        @GetMapping("/user")
+        public List<UserResponse> getUsers() {
+          List<UserResponse> responses = new ArrayList<>();
+          for (int i = 0; i < users.size(); i++) {
+            responses.add(new UserResponse(i + 1, users.get(i)));
+          }
+          return responses;
+        }
+   ```
  
 </details>
 
