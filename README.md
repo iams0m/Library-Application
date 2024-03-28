@@ -314,6 +314,17 @@ spring.com:3000
 <details>
   
 **<summary> `Section 2) 생애 최초 Database 조작하기` </summary>**
+### ✔️ Database와 MySQL
+<p>지금까지 우리는 User 정보를 RAM (임시 기억 장치)에 저장했다. 그래서 서버가 종료되면, RAM에 있는 모든 정보가 사라져 User 정보가 날라갔다.</p>
+<p>데이터가 날라가지 않도록 하기 위해 DISK (장기 기억 장치)에 정보를 저장할 수 있도록 해보자. 이럴 때 사용하는 것이 Database이다 !</p>
+
+#### 📍 Database
+<p>Database란, 데이터를 구조화 시켜 저장하는 장치이다. 대표적으로 RDB의 MySQL이 있다.</p>
+
+  * RDB (Relational Database) : 데이터를 표처럼 구조화 시켜 저장 (예 : MySQL)
+  * SQL (Structured Query Language) : 표처럼 구조화된 데이터를 조회하는 언어
+
+<p>MySQL을 사용해 데이터에 접근해보자.</p>
 
 </details>
 
