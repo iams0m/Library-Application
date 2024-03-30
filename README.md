@@ -387,6 +387,36 @@ spring.com:3000
   * time : `HH:mm:ss`
   * datetime : `yyyy-MM-dd HH:mm:ss`
 
+### ✔️ 테이블 데이터 조작하기
+#### 📍 DML (Data Manipulation Language)
+  * 데이터 삽입
+  ```sql
+  $> INSERT INTO [테이블 이름] (필드1이름, 필드2이름, ...) VALUES (값1, 값2, ...)
+  ```
+
+  * 데이터 조회
+  ```sql
+  $> SELECT * FROM [테이블 이름]; # * 대신 필드 이름 작성 가능
+  ```
+
+  ```sql
+  # 특정 조건을 걸어 조회
+  $> SELECT * FROM [테이블 이름] WHERE [조건];
+  ```
+
+  * 데이터 업데이트
+  ```sql
+  $> UPDATE [테이블 이름]
+  SET 필드1이름=값, 필드2이름=값, ... WHERE [조건];
+  # [조건]이 없으면, 모든 데이터 업데이트
+  ```
+
+  * 데이터 삭제
+  ```sql
+  $> DELETE FROM [테이블 이름] WHERE [조건];
+  # [조건]이 없으면, 모든 데이터 삭제
+  ```
+
 </details>
 
 
