@@ -417,6 +417,41 @@ spring.com:3000
   # [조건]이 없으면, 모든 데이터 삭제
   ```
 
+### ✔️ Spring에서 Database 사용하기
+#### 📍`application.yml` 파일 만들기
+* `application.properties`에 DB 설정 정보 기입도 가능
+  ```yml
+  spring:
+    datasource:
+      url: "jdbc:mysql://localhost/library"
+      username: "root"
+      password: "1234"
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  ```
+  * url : 연결할 데이터베이스 주소
+    * `jdbc:mysql://` : jdbc를 이용해 mysql 접근
+    * `localhost` : 접근하려는 mysql은 localhost에 있음
+    * `/library` : 접근하려는 데이터베이스는 library
+  * username : mysql에 접근하기 위한 계정명
+  * password : mysqp에 접근하기 위한 비밀번호
+  * driver-class-name : 데이터베이스 접근시 사용할 프로그램 
+
+#### 📍 유저 생성 API 리팩토링
+  ##### 1️⃣ User 테이블 생성
+  ##### 2️⃣ JdbcTemplate을 이용해 sql 날리기
+  * JdbcTemplate을 final 변수를 만들고 생성자를 만들어두면, 스프링이 알아서 JdbcTemplate을 넣어줌
+  ##### 3️⃣ sql을 문자열로 입력 후, 값이 들어갈 부분에 ? 넣기
+  * ? 사용시, 유동적으로 값 변경 가능
+  * 이 문자열을 JdbcTemplate의 update 메서드에 담음 (➡️ JdbcTemplate의 update 메서드는 insert, update, delete 쿼리에 적용 가능)  
+
+#### 📍 유저 조회 API 리팩토링
+  ```java
+  jdbcTemplate.query(sql, RowMapper 구현 익명클래스)
+  ```
+  * query를 사용하면, select 쿼리를 날릴 수 있음
+  * 구현 익명클래스 안에는 ResultSet에 getType("필드이름")을 사용해 실제 값을 가져올 수 있음
+    * 익명클래스는 람다식을 이용하면 더 간단하게 표현 가능 !
+
 </details>
 
 
