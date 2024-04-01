@@ -452,6 +452,59 @@ spring.com:3000
   * 구현 익명클래스 안에는 ResultSet에 getType("필드이름")을 사용해 실제 값을 가져올 수 있음
     * 익명클래스는 람다식을 이용하면 더 간단하게 표현 가능 !
 
+### ✔️ 유저 업데이트 API, 삭제 API 개발과 테스트
+#### 📍 도서관 사용자 이름 변경 
+  #### 👤 유저 업데이트 API
+  * HTTP Method : `PUT`
+  * HTTP Path : `/user`
+  * HTTP Body (JSON)
+  
+    ```text
+      {
+        "id": Long,
+        "name": String
+      }
+    ```
+    
+  * 결과 반환 X
+    * `200 OK` 상태 코드
+   
+  #### 로직
+   ##### 1️⃣ API 호출
+   ##### 2️⃣ UPDATE 쿼리를 통해 jdbcTemplate의 update 메서드에 넘겨줌
+
+   ```java
+      @RestController
+      public class UserController {
+        @PutMapping("/user")
+        public void updateUser(@RequestBody UserUpdateRequest request) {
+          String sql = "UPDATE user SET name = ? WHERE id = ?";
+          jdbcTemplate.update(sql, request.getName(), request.getId());
+      }
+   ```
+
+#### 📍 도서관 사용자 삭제 
+  #### 👤 유저 삭제 API
+  * HTTP Method : `DELETE`
+  * HTTP Path : `/user`
+  * 쿼리
+    * 문자열 name (삭제할 사용자 이름) 
+  * 결과 반환 X
+    * `200 OK` 상태 코드
+   
+  #### 로직
+   ##### 1️⃣ API 호출
+   ##### 2️⃣ DELETE 쿼리를 통해 jdbcTemplate의 update 메서드에 넘겨줌
+
+   ```java
+      @RestController
+      public class UserController {
+        @DeleteMapping("/user")
+        public void deleteUser(@RequestParam String name) {
+          String sql = "DELETE FROM user WHERE name = ?";
+          jdbcTemplate.update(sql, name);
+      }
+   ```
 </details>
 
 
