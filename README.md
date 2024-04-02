@@ -505,6 +505,31 @@ spring.com:3000
           jdbcTemplate.update(sql, name);
       }
    ```
+
+### ✔️ 유저 업데이트 API, 삭제 API 예외 처리하기
+<p>존재하지 않는 유저를 업데이트나 삭제하려고 할 때, 예외가 발생하도록 수정해보자.</p>
+  
+   ```java
+     String readSql = "SELECT * FROM user WHERE id = ?";
+     boolean isUserNotExist = jdbcTemplate.query(readSql, (rs, rowNum) -> 0, request.getId()).isEmpty();
+     if (isUserNotExist) {
+       throw new IllegalArgumentException();
+     }
+   ```
+
+  #### 로직
+   ##### 1️⃣ id를 기준으로 유저가 존재하는지 확인하는 sql을 날려 DB 데이터 유무 체크 
+   ##### 2️⃣ 있으면 다음 로직 수행, 없으면 예외 발생
+   
+### 📚 Section 2 학습 내용
+#### 1️⃣ 데이터베이스를 통해 서버 재시작하면 데이터가 사라지는 문제를 해결할 수 있었다.
+#### 2️⃣ SQL을 이용하여 MySQL 데이터베이스를 조작할 수 있다.
+#### 3️⃣ 스프링 서버를 이용해 데이터베이스에 접근하고 데이터를 저장, 조회, 업데이트, 삭제할 수 있다.
+#### 4️⃣ API 예외 상황을 이해하고 예외를 처리할 수 있다.
+
+#### ⚠️ 우리가 개발한 API의 문제점
+<p>한 클래스인 Controller가 많은 역할을 담당하며, 여러 비즈니스 로직이 통합되어 있다.</p>
+<p>추가로 구현해야 할 요구사항이 늘어날수록 코드 수정은 복잡해질 것이다. 따라서 이런 문제를 어떻게 해결할 수 있을지 고민해보자.</p>
 </details>
 
 
