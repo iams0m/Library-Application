@@ -554,6 +554,24 @@ spring.com:3000
     3. DB 통신
 
 <p>♻️ Controller를 3단 분리 해보자</p>
+
+### ✔️ Controller 3단 분리하기
+#### 📍 Layered Architecture
+<p>Controller, Service, Repository 각 클래스가 각자의 역할을 가지고 겹겹이 쌓인 구조</p>
+  
+  ##### Controller
+  * 클라이언트의 요청 및 응답 처리
+  * Service에게 요청에 대한 처리 전담
+  
+  ##### Service
+  * 사용자 요구사항 처리
+  * DB 정보 필요시, Repository에게 전담
+  * Controller와 Repository 사이를 연결하는 역할
+  
+  ##### Repository
+  * DB 관리 (연결, 해제, 자원 관리)
+  * DB CRUD (Create, Read, Update, Delete) 작업 처리
+
 </details>
 
 
