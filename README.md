@@ -573,7 +573,7 @@ spring.com:3000
   * DB CRUD (Create, Read, Update, Delete) 작업 처리
 
 ### ✔️ UserController와 스프링 컨테이너
-#### 📍UserController
+#### 📍 UserController
 이전에 작성한 `UserController`를 살펴보면, 의아한 부분이 존재한다.
 
    ```java
@@ -591,12 +591,18 @@ spring.com:3000
 
   <p> 🙋🏻 현재 UserController에 존재하는 메서드를 API의 진입 지점으로 사용하고 있다. 상식적으로 클래스 안에 있는 함수를 사용하기 위해서 객체화 (인스턴스화)가 필요하다 !</p> 
   
-  ####  🤔 UserController를 현재 객체화 하지 않고 있는데, 어떻게 API의 진입 지점으로 사용하는 것일까?
+    🤔 질문 1. UserController를 현재 객체화 하지 않고 있는데, 어떻게 API의 진입 지점으로 사용하는 것일까?
 
   
   <p> 🙋🏻 UserController의 생성자는 JdbcTemplate을 의존하고 있다. 하지만 우리는 JdbcTemplate에 대해 처리한 적이 없다 !</p>
   
-  ####  🤔 UserController는 어떻게 JdbcTemplate을 가져오는 걸까?
+     🤔 질문 2. UserController는 어떻게 JdbcTemplate을 가져오는 걸까?
+
+#### 📍 `@RestController`  
+<p>이 어노테이션은 UserController 클래스를 API의 진입 지점으로 만들어 줄 뿐만 아니라, 스프링 빈으로 등록 시켜준다. </p>
+
+#### 🫛 스프링 빈
+
 </details>
 
 
