@@ -609,6 +609,25 @@ spring.com:3000
 <p>JdbcTemplate 역시 스프링 빈으로 등록되어 있기 때문에 스프링 컨테이너 내부에 존재하게 된다.</p>
 
 #### 따라서 스프링 컨테이너는 `UserController`를 인스턴스화 할 때, `JdbcTemplate`을 컨테이너 내부에서 찾아서 가져올 수 있었던 것이다 ! 
+
+     🤔 그럼 누가 JdbcTemplate을 스프링 빈으로 등록해준걸까?
+
+<p>바로 build.gradle의 spring-boot-starter-data-jpa 의존서이 JdbcTemplate을 스프링 빈으로 미리 등록해준 것이다. </p>
+
+   ```gradle
+    dependencies {
+      implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    }
+   ```
+
+<p>위의 내용을 정리해보자 ! 우리가 서버를 시작하게 되면 다음과 같은 일이 순차적으로 일어난다.</p>
+
+    1. 스프링 컨테이너 시작
+    2. 기본적으로 많은 스프링 빈이 컨테이너에 등록됨
+    3. 개발자가 직접 설정해준 스프링 빈 등록
+    4. 필요한 의존성 자동 설정
+
+#### 🫛 스프링 빈 등록하기
 </details>
 
 
