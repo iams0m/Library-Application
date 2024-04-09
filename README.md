@@ -627,7 +627,38 @@ spring.com:3000
     3. 개발자가 직접 설정해준 스프링 빈 등록
     4. 필요한 의존성 자동 설정
 
-#### 🫛 스프링 빈 등록하기
+#### 🫛 Repository와 Service 스프링 빈 등록하기
+<p>Repository와 Service를 스프링 빈으로 등록하는 방법은 아주 간단하다 !</p>
+
+##### Repository 클래스는 `@Repository` 어노테이션을 클래스 위에 붙여주고, Service 클래스는 `@Service` 어노테이션을 클래스 위에 붙여주기만 하면 빈으로 등록이 된다. 
+
+##### 그럼 이제 `Controller` 입장에서도 `Service`가 스프링 빈이니 굳이 직접 `new` 연산자를 통해 인스턴스화 해줄 필요가 없다 ! 컨테이너가 알아서 처리해줄 것이다.
+
+##### 또한 `Repository`가 `JdbcTemplate`을 직접 가지고 있기 때문에 `Controller`는 `JdbcTemplate`를 가지고 있을 필요가 없어지게 된다. 그럼 `Controller`는 아래와 같이 변경될 것이다.
+
+#### 📍 UserController
+   ```java
+    @RestController
+    public class UserController {
+
+     private final UserService userService;
+
+     public UserController(UserService userService) {
+       this.userService = userService;
+     }
+
+    }
+   ```
+
+#### `Controller` - `Service` - `Repository` 클래스가 스프링 빈으로 등록되는 과정을 정리해보자.
+<p>스프링 서버가 시작되면,</p>
+
+    1. 의존성에 의해 빈으로 등록된 JdbcTemplate이 스프링 컨테이너로 들어간다.
+    2. JdbcTemplate의 의존성을 가진 UserRepository가 빈으로 등록된다.
+    3. UserRepository를 의존하는 UserService가 빈으로 등록된다.
+    4. UserService를 의존하는 UserController가 빈으로 등록된다.
+
+#### 🤔 코드가 깔끔해진 것 같긴 한데 ... 스프링 컨테이너를 사용하는 이유에 대해 자세히 알아보자 !
 </details>
 
 
