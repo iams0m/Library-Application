@@ -659,6 +659,86 @@ spring.com:3000
     4. UserService를 의존하는 UserController가 빈으로 등록된다.
 
 #### 🤔 코드가 깔끔해진 것 같긴 한데 ... 스프링 컨테이너를 사용하는 이유에 대해 자세히 알아보자 !
+
+### ✔️ 스프링 컨테이너
+<p>아래와 같은 요구사항이 있다고 하자.</p>
+
+> 책 이름을 메모리에 저장하는 API를 구현하라. Controller만 스프링 빈으로 등록하고 Service와 Repository는 스프링 빈이 아니어야 한다.
+
+<p>우리는 먼저 Book 객체를 만들고 BookController, BookService, BookMemoryRepository를 만들 것이다. 그리고 BookMemoryRepository를 의존하는 BookService는 아래와 같이 객체를 생성할 것이다.</p>
+
+#### 📍 BookService
+   ```java
+    public class BookService {
+      private final BookMemoryRepository bookRepository = new BookMemoryRepository();
+    }
+   ```
+
+<p>이제 Memory가 아닌 MySQL과 같은 DB를 사용하기로 요구사항이 변경되었다고 가정하자. 그리고 JdbcTemplate은 Repository가 바로 설정할 수 있다고 하자. 그럼 아래와 같은 일이 일어날 것이다.</p>
+
+    1. BookMemoryRepository 대신 BookMySqlRepository가 새로 생길 것이다.
+    2. Repository가 변경됨에 따라 BookService도 변경될 것이다.
+
+#### 🤔 Repository의 역할만 변경하고 싶은데 Service 변경을 최소화할 수 있는 방법은 없을까?
+  
+  #### 📍 Java의 인터페이스
+  <p>인터페이스를 도입하게 되면 코드는 아래와 같이 변경된다.</p>
+
+  ##### 📍 BookService
+  ```java
+    public class BookService {
+      private final BookRepository bookRepository = new BookMemoryRepository();
+    }
+   ```
+
+  ##### 📍 BookRepository
+  ```java
+    public interface BookRepository {
+      public void save(String bookName);
+    }
+   ```
+
+  ##### 📍 BookMemoryRepository
+  ```java
+    public class BookMemoryRepository implements BookRepository {
+      private final List<String> books = new ArrayList();
+
+      @Override
+      public void save(String bookName) {
+        books.add(bookName);
+      }
+
+    }
+   ```  
+
+  ##### 📍 BookMySqlRepository
+  ```java
+    public class BookMySqlRepository implements BookRepository {
+      private final List<String> books = new ArrayList();
+
+      @Override
+      public void save(String bookName) {
+        // jdbcTemplate.....
+      }
+
+    }
+   ```
+
+<p>인터페이스의 도입으로 Service 코드 변경을 최소화 하였다 !</p>
+
+##### 만약 Repository를 쓰는 Service 코드가 수백 개 클래스에 있다면, Repository 변경시 Service 코드를 하나하나 수정하는 것은 여전히 어려울 것이다 😢
+
+#### 🤔 그렇다면 Repository를 변경하더라도 Service를 완전히 변경하지 않는 방법은 없을까?
+<p>➡️ 이 고민에 대한 해결책이 바로 스프링 컨테이너이다 !</p>
+
+#### 📍 제어의 역전(IoC, Inversion of Control)
+
+> 스프링 컨테이너가 Service 대신 Repository를 인스턴스화 해주고, 그때 그때 알아서 어떤 Repository 클래스를 사용할지 결정해주는 방식
+
+#### 📍 의존성 주입(DI, Dependency Injection)
+
+> * 스프링 컨테이너가 Repository 클래스를 선택해서 Service에 넣어주는 과정
+> * `@Primary` 어노테이션을 이용해 우선권 제어 가능
 </details>
 
 
