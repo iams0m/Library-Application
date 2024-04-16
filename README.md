@@ -830,6 +830,13 @@ spring.com:3000
   > * primary key는 데이터베이스에서 자동으로 생성해주기 때문에 필요한 애노테이션
   > * 데이터베이스마다 다른 자동 생성 전략 (MySQL의 auto_increment는 IDENTITY 전략과 매칭 
 
+  ##### ⚠️ JPA에 의해 테이블과 매핑된 객체는 기본 생성자 반드시 필요
+
+  ##### 3️⃣ `@Column` 애노테이션 추가
+  >* nullable : 필드에 null이 들어갈 수 있는지 여부
+  >* length : 길이 제한
+  >* name : 데이터베이스에서의 Column 이름 설정 (➡️ 필드 이름과 동일할 경우 생략 가능)
+  
   #### 📍 User 객체
   ```java
     @Entity
@@ -838,9 +845,39 @@ spring.com:3000
       @Id
       @GeneratedValue(strategy = GenerationType.IDENTITY)
       private Long id = null;
+
+      @Column(nullable = false, length = 20, name = "name")
+      private String name;
+      private Integer age;
+
+      protected User() {}
       ...
     }
-   ```
+   ```  
+
+  ##### 4️⃣ `application.yml`에 JPA 설정하기
+  ```yml
+    spring:
+     jpa:
+      hibernate:
+        ddl-auto: none
+      properties:
+        hibernate:
+          show_sql: true
+          format_sql: true
+          dialect: org.hibernate.dialect.MySQLDialect
+   ```  
+    
+  * **`ddl-auto`** : 스프링이 시작할 때 DB에 있는 테이블을 어떻게 처리할 것인지에 대한 옵션
+    * create : 기존 테이블이 있다면, 삭제 후 다시 생성
+    * create-drop : 스프링이 종료될 때 테이블 삭제
+    * update : 객체와 테이블이 다른 부분만 변경
+    * validate : 객체와 테이블이 동일한지 확인
+    * none : 아무런 조치 X
+
+  * **`show_sql`** : JPA를 사용해 DB에 SQL을 날릴 때, SQL을 보여줄지 결정
+  * **`format_sql`** : JPA를 사용해 DB에 SQL을 날릴 때, SQL 포맷팅 여부 결정
+  * **`dialect`** : JPA가 알아서 DB끼리 다른 SQL 수정
 </details>
 
 
