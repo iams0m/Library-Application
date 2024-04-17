@@ -820,7 +820,6 @@ spring.com:3000
   > * 저장되고 관리되어야 하는 데이터
   > * 서버가 동작할 때 User 객체와 User 테이블을 같은 것으로 간주
 
-
   ##### 2️⃣ User 테이블에만 존재하는 id를 User 객체에 추가하기
   <p>현재 User 테이블은 id가 primary key이고, auto_increment가 적용되어 있다. 이 부분을 자바 코드에 적용하기위해 아래와 같은 애노테이션을 User 객체에 추가하자.</p> 
   
@@ -878,6 +877,61 @@ spring.com:3000
   * **`show_sql`** : JPA를 사용해 DB에 SQL을 날릴 때, SQL을 보여줄지 결정
   * **`format_sql`** : JPA를 사용해 DB에 SQL을 날릴 때, SQL 포맷팅 여부 결정
   * **`dialect`** : JPA가 알아서 DB끼리 다른 SQL 수정
+
+### ✔️ Spring Data JPA를 이용해 자동으로 쿼리 날리기
+  <p>이제 직접 SQL을 작성하지 않고 JPA를 이용하여 유저 생성/조회/업데이트 기능을 리팩토링해보자 !</p> 
+
+  ##### 1️⃣ domain 계층에 JpaRepository를 상속 받는 UserRepository 인터페이스 생성
+  ```java
+    public interface UserRepository extends JpaRepository<User, Long> {
+    }
+   ``` 
+
+  ##### 2️⃣ 서비스 코드에서 해당 UserRepository로 의존성 주입
+  ##### 📍 UserService (유저 생성)
+  ```java
+    public void saveUser(UserCreateRequest request) {
+      userRepository.save(new User(request.getName(), request.getAge()));
+    }
+  ``` 
+
+  > * JpaRepository를 상속 받은 UserRepository에 내장되어 있는 save 메서드 사용
+  > * User 객체 생성 후 실제 DB에 저장
+
+  ##### 📍 UserService (유저 조회)
+  ```java
+    public List<UserResponse> getUsers() {
+      return userRepository.findAll().stream()
+              .map(user -> new UserResponse(user.getId(), user.getName(), user.getAge()))
+              .collect(Collectors.toList());
+    }
+  ``` 
+
+  > * JpaRepository를 상속 받은 UserRepository에 내장되어 있는 findAll 메서드 사용
+  > * 모든 유저 데이터를 조회하는 SQL이 날라가고 List<User> 반환
+  > * List<User>를 UserResponse로 변경하여 전달
+
+  ##### 📍 UserService (유저 업데이트)
+  ```java
+    public void updateUser(UserUpdateRequest request) {
+      User user = userRepository.findById(request.getId()).orElseThrow(IllegalArgumentException::new);
+      user.updateName(request.getName());
+    
+      userRepository.save(user);
+    }
+  ``` 
+
+  > * JpaRepository를 상속 받은 UserRepository에 내장되어 있는 findById 기능 사용
+  > * id로 1개의 User 데이터를 가져오는 SQL이 날라가고 User 반환
+  > * orElseThrow를 사용하여 User가 비어있는 경우 예외 발생
+  > * User가 있다면 updateName이라는 메서드가 실행되고, save를 통해 업데이트 내용 저장
+
+  #### 🤔 그럼 이렇게 메서드를 통해 쿼리 작성 없이 쿼리가 날라갈 수 있는 이유는 무엇일까?
+  #### ➡️ JPA를 이용하는 Spring Data JPA가 자동으로 처리해준 것 !
+  > Spring Data JPA : 복잡한 JPA 코드를 스프링과 함께 쉽게 사용할 수 있도록 도와주는 라이브러리
+
+  <p>즉, 전체적인 구조를 살펴보면 Spring Data JPA가 JPA라는 규칙을 사용하는데 이 규칙은 Hibernate가 구현했고, Hibernate는 구현할 때 JDBC를 사용한다 !</p>
+
 </details>
 
 
