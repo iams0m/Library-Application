@@ -932,8 +932,52 @@ spring.com:3000
 
   <p>즉, 전체적인 구조를 살펴보면 Spring Data JPA가 JPA라는 규칙을 사용하는데 이 규칙은 Hibernate가 구현했고, Hibernate는 구현할 때 JDBC를 사용한다 !</p>
 
-</details>
+### ✔️ Spring Data JPA를 이용해 다양한 쿼리 작성하기
+  <p>이제 삭제 기능을 Spring Data JPA로 변경해보자. 삭제는 요청으로 들어온 유저의 이름이 존재하는지 확인하고, 유저가 존재한다면 delete 쿼리를 날리고 없으면 예외를 날리게 된다.</p>
+  
+  ##### 📍 UserService (유저 삭제)
+  ```java
+    public void deleteUser(String name) {
+      User user = userRepository.findByName(name).orElseThrow(IllegalArgumentException::new);
+    
+      userRepository.delete(user);
+    }
+  ```
 
+  ##### 📍 UserRepository
+  ```java
+    public interface UserRepository extends JpaRepository<User, Long> {
+
+      Optional<User> findByName(String name);
+    }
+  ```  
+
+  > findByName
+  > * 기본으로 제공하는 메서드가 아닌 직접 인터페이스에 정의한 메서드 (함수 이름만 작성하면, 알아서 SQL 조립)
+  > * 이름을 기준으로 User 데이터를 조회하여 User 객체 반환 (User 정보가 없으면, null 반환)
+
+  > delete
+  > * 기본으로 제공해주는 메서드
+
+  #### 📍 Spring Data JPA의 추가적인 쿼리 작성법
+  <p>findByName처럼 우리가 일정한 규칙에 맞게 인터페이스에 정의하면 쿼리들을 제공해준다. 그 규칙들을 살펴보자. By 앞과 뒤에 어떤 단어가 들어가는지에 따라 쿼리를 마음껏 만들어낼 수 있다.</p>
+  <p>By 앞에는 다음과 같은 구절이 들어갈 수 있다.</p>
+  
+  > * find : 1건을 가져옴, 객체나 Optional<타입> 반환
+  > * findAll : 쿼리의 결과물이 N개인 경우 사용, List<타입> 반환
+  > * exists : 쿼리 결과가 존재하는지 확인, boolean 타입 반환
+  > * count : SQL의 결과 개수를 셈, long 타입 반환 
+
+  <p>By 뒤에는 필드 이름이 들어간다. 조건이 여러개일 경우 And 혹은 Or로 조합될 수 있다.</p>
+  
+  > * GreaterThan : 초과
+  > * GreaterThanEqual : 이상
+  > * LessThan : 미만
+  > * LessThanEqual : 이하
+  > * Between : 사이에
+  > * StartsWith : ~로 시작하는
+  > * EndsWith : ~로 끝나는
+</details>
 
 <details>
   
