@@ -183,8 +183,8 @@ spring.com:3000
   * `@RequestParam` : 주어진 쿼리를 함수 파라미터로 넣음
     * 단일 타입으로 넣을 수도 있지만, request DTO를 생성하여 객체 넣기도 가능 (➡️ 이때 애노테이션 생략) 
 
-#### 2️⃣ POST API
-<p>HTTP Body 사용법 연습을 위해 곱셈 기능을 POST로 작성해보자. (원래 POST API는 어떤 값을 저장한다는 의미이기 때문에 적절한 방법은 아니다 😅)</p>
+#### 2️⃣  API
+<p>HTTP Body 사용법 연습을 위해 곱셈 기능을 로 작성해보자. (원래  API는 어떤 값을 저장한다는 의미이기 때문에 적절한 방법은 아니다 😅)</p>
   
   #### ➕ 곱셈 API
   * HTTP Method : `POST`
@@ -1031,7 +1031,44 @@ spring.com:3000
 <details>
   
 **<summary> `Section 5) 책 요구사항 구현하기` </summary>**
+<p>지금까지 학습한 내용을 바탕으로 책을 등록하고 대출, 반납할 수 있는 기능을 만들어보자.</p>
 
+### ✔️ 책 생성 API 개발하기
+  #### 📍 API 스펙
+  * HTTP Method : `POST`
+  * HTTP Path : `/book`
+  * HTTP Body (JSON)
+      
+      ```text
+      {
+        “name": String // 책 이름
+      }
+      ```
+  * 결과 반환 X
+    * `200 OK` 상태 코드
+
+  #### 📍 개발하기
+  ##### 1️⃣ 테이블 설계
+
+     ```sql
+      create table book(
+         id bigint auto_increment,
+         name varchar(255),
+         primary key (id)
+     );
+      ```
+
+  > **id**
+  > * 모든 테이블에는 자동 증가하는 아이디 필요
+  
+  > **책 이름 최대 255자**
+  > * JPA 사용시 `@Column` 애노테이션을 쓰게 되는데, 길이 제한 기본값이 255자 ➡️ `@Column` 생략 가능
+  > * 문자열 필드는 최적화를 해야 하는 경우가 아니라면, 여유롭게 설정하는 것이 좋음 ➡️ 테이블의 스키마(DDL)를 바꾸는 일이 생각보다 어려울 수 있음
+  
+  ##### 2️⃣ 자바 객체 생성
+  > book 테이블을 기반으로 Book 객체 만들기 (➡️ domain 객체)
+  
+  ##### 3️⃣ BookRepository / DTO / Controller / Service 생성
 </details>
 
 
