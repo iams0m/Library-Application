@@ -1050,13 +1050,13 @@ spring.com:3000
   #### 📍 개발하기
   ##### 1️⃣ 테이블 설계
 
-     ```sql
-      create table book(
-         id bigint auto_increment,
-         name varchar(255),
-         primary key (id)
-     );
-      ```
+  ```sql
+  create table book(
+    id bigint auto_increment,
+    name varchar(255),
+    primary key (id)
+  );
+```
 
   > **id**
   > * 모든 테이블에는 자동 증가하는 아이디 필요
@@ -1065,10 +1065,71 @@ spring.com:3000
   > * JPA 사용시 `@Column` 애노테이션을 쓰게 되는데, 길이 제한 기본값이 255자 ➡️ `@Column` 생략 가능
   > * 문자열 필드는 최적화를 해야 하는 경우가 아니라면, 여유롭게 설정하는 것이 좋음 ➡️ 테이블의 스키마(DDL)를 바꾸는 일이 생각보다 어려울 수 있음
   
-  ##### 2️⃣ 자바 객체 생성
+  ##### 2️⃣ JPA 객체 생성
   > book 테이블을 기반으로 Book 객체 만들기 (➡️ domain 객체)
   
   ##### 3️⃣ BookRepository / DTO / Controller / Service 생성
+
+### ✔️ 책 대출 API 개발하기
+  #### 📍 요구사항
+  * 사용자는 책을 빌릴 수 있다.
+    * 다른 사람이 대여 중인 책은 빌릴 수 없다.   
+
+  #### 📍 API 스펙
+  * HTTP Method : `POST`
+  * HTTP Path : `/book/loan`
+  * HTTP Body (JSON)
+      
+      ```text
+      {
+        “username": String
+        “bookname": String      
+      }
+      ```
+  * 결과 반환 X
+    * `200 OK` 상태 코드
+
+  #### 📍 개발하기
+  ##### 1️⃣ 테이블 설계
+  <p>어떤 유저가 어떤 책을 빌리고 반납했는지 확인할 수 있는 테이블 추가적으로 설계하기</p>
+
+  ```sql
+  create table user_loan_history(
+    id bigint auto_increment,
+    user_id bigint,
+    book_name varchar(255),
+    is_return tinyint(1),
+    primary key (id)
+  );
+  ```
+
+  > **id**
+  > * 모든 테이블에는 자동 증가하는 아이디 필요
+
+  > **user_id**
+  > * 어떤 유저가 빌렸는지 알 수 있도록 유저 id 필드 생성
+
+  > **book_name**
+  > * 유저가 어떤 책을 빌렸는지 알 수 있도록 책 이름 필드 생성
+
+  > **is_return**
+  > * 유저가 빌린 책이 대출 중인지, 반납 완료했는지 확인하는 필드
+  > * 값이 0이면 대출 중, 값이 1이면 반납 완료
+  
+  
+  ##### 2️⃣ JPA 객체 생성
+  > * user_loan_history 테이블을 기반으로 UserLoanHistory 객체 만들기 (➡️ domain 객체)
+  > * tinyint형을 쓰고 있는 is_return 필드를 boolean에 매핑하게 되면, DB에 0이 들어갈 경우 false, 1이 들어갈 경우 true로 생각함
+  
+  ##### 3️⃣ UserLoanHistoryRepository / DTO / Controller / Service 생성
+    1. Controler에서 API를 받아 HTTP 파싱 후, POST /book/loan으로 연결
+    2. HTTP Body에 들어있는 JSON을 BookLoanRequest로 변경해주고, 그 정보를 BookService로 넘겨줌
+    3. Service 계층에서는 Transactional을 관리해주고, repository 호출
+      
+      a. 책 정보 가져오기
+      b. 대출 기록 정보를 확인해서 대출 중인지 확인
+      c. 대출 중이라면 예외를 발생시키고, 그렇지 않다면 유저 정보 가져오기
+      d. 유저 정보와 책 정보를 기반으로 대출 기록 생성
 </details>
 
 
