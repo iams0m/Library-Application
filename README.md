@@ -1130,6 +1130,39 @@ spring.com:3000
       b. 대출 기록 정보를 확인해서 대출 중인지 확인
       c. 대출 중이라면 예외를 발생시키고, 그렇지 않다면 유저 정보 가져오기
       d. 유저 정보와 책 정보를 기반으로 대출 기록 생성
+
+### ✔️ 책 반납 API 개발하기
+  #### 📍 요구사항
+  * 사용자는 책을 반납할 수 있다.
+
+  #### 📍 API 스펙
+  * HTTP Method : ` PUT`
+  * HTTP Path : `/book/return`
+  * HTTP Body (JSON)
+      
+      ```text
+      {
+        “username": String
+        “bookname": String      
+      }
+      ```
+  * 결과 반환 X
+    * `200 OK` 상태 코드
+
+  #### 📍 개발하기
+  ##### 1️⃣ JPA 객체 생성
+  > 대출 기능과 스펙이 동일하더라도 DTO가 다르면, 둘 중 하나의 기능에 변화가 생겼을 때 한 부분에만 코드 추가가 가능하면서 다른 한 쪽에 영향을 미치지 않음 ➡️ 스펙이 동일하더라도 다른 DTO 객체를 만들자 !
+  
+  ##### 2️⃣ Controller 생성
+  
+  ##### 3️⃣ Service 생성
+    1. Controler에서 API를 받아 HTTP 파싱 후, POST /book/return으로 연결
+    2. HTTP Body에 들어있는 JSON을 BookReturnRequest로 변경해주고, 그 정보를 BookService로 넘겨줌
+    3. Service 계층에서는 Transactional을 관리해주고, repository 호출
+      
+      a. userName을 가지고 유저를 찾아서 userId를 가져옴
+      b. userId와 bookName을 통해 대출 기록 확인
+      c. 대출 기록 반납 처리 (➡️ isReturn을 true로 변경)
 </details>
 
 
