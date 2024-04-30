@@ -1257,7 +1257,21 @@ spring.com:3000
   > * 경랑 데이터베이스로, 개발 단계에서 많이 사용
   > * Disk가 아닌 Memory에 데이터 저장 ➡️ 데이터 휘발 (ddl-auto 옵션을 create로 주면 테이블을 신경 쓰지 않고 코드에만 집중 가능)
 
+### ✔️ git과 github
+  #### 📍 git
+  > 코드를 쉽게 관리할 수 있도록 해주는 버전 관리 프로그램
+ 
+  ##### ☑️ git 명령어
+  * `git init` : git 저장소 생성
+  * `git remote add origin [각자 저장소 주소]` : git 프로젝트의 github 저장소 설정
+  * `git add .` : 저장소에 코드 추가
+  * `git status` : 현재 상태 확인
+  * `git commit -m "메세지"` : 커밋 생성
+  * `git push` : 변경 사항 원격 깃허브 저장소로 전송
 
+  #### 📍 github
+  > git으로 관리되는 프로젝트의 코드가 저장되는 저장소
+  > * github에 코드를 저장하게 되면 컴퓨터에 있는 코드가 소실되더라도, 원본 코드를 지킬 수 있음 
 </details>
 
 
