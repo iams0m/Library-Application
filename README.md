@@ -1339,4 +1339,22 @@ spring.com:3000
   > * pwd : 현재 위치를 확인하는 명령어
   > * cd .. : 상위 폴더로 올라가는 명령어
   > * rmdir : 비어 있는 폴더를 제거하는 명령어
+
+### ✔️ 배포를 위한 프로그램 설치하기
+  <p>EC2 접속을 완료했다면, 이제 배포를 위해 필요한 프로그램을 설치해보자.</p>
+
+  #### 📍 설치 프로그램 3가지
+
+  ##### 1. 코드를 가져오기 위한 `git`
+    sudo yum install git
+
+  * sudo : 관리자 권한으로 실행
+  * yum : 리눅스 패키지 관리 프로그램 
+  
+  ##### 2. 서버를 구동할 `java`
+    sudo yum install java-11-amazon-corretto
+    
+  ##### 3. 데이터베이스 역할을 할 `MySQL`
+    sudo yum install mysql-community-server
+  
 </details>
